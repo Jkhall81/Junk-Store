@@ -1,16 +1,18 @@
 import { useGetProductsQuery } from "../redux/services/productsApi";
 import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
+import Loader from "../components/Loader";
+import Message from "../components/Message";
 
 const HomeScreen = () => {
   const { data: products, error, isLoading } = useGetProductsQuery();
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
 
   if (error) {
-    return <p>Error: {error}</p>;
+    return <Message variant="danger">Error: {error}</Message>;
   }
 
   return (

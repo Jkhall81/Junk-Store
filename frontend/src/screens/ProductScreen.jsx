@@ -2,6 +2,8 @@
 import { Link } from "react-router-dom";
 import { Row, Col, Image, ListGroup, Button, Card } from "react-bootstrap";
 import Rating from "../components/Rating";
+import Loader from "../components/Loader";
+import Message from "../components/Message";
 import { useGetProductByIdQuery } from "../redux/services/productsApi";
 import { useParams } from "react-router-dom";
 
@@ -10,11 +12,11 @@ const ProductScreen = () => {
   const { data: product, error, isLoading } = useGetProductByIdQuery(id);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
 
   if (error) {
-    return <p>Error: {error}</p>;
+    return <Message variant="danger">Error: {error}</Message>;
   }
 
   return (
