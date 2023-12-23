@@ -16,7 +16,12 @@ const ProductScreen = () => {
   }
 
   if (error) {
-    return <Message variant="danger">Error: {error}</Message>;
+    console.log(error);
+    return (
+      <Message variant="danger">
+        Error: {error.status} {error.data.detail || "Something went wrong!"}
+      </Message>
+    );
   }
 
   return (
