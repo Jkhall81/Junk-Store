@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import {
   Row,
   Col,
@@ -11,10 +11,11 @@ import {
 } from "react-bootstrap";
 import Message from "../components/Message";
 import { useGetProductByIdQuery } from "../redux/services/productsApi";
-import { addToCart } from "../redux/reducers/cart.slice";
+import { addToCart, removeFromCart } from "../redux/reducers/cart.slice";
 import { useDispatch, useSelector } from "react-redux";
 
 const CartScreen = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
   const location = useLocation();
@@ -31,7 +32,11 @@ const CartScreen = () => {
   }, [dispatch, product, qty]);
 
   const removeFromCartHandler = (id) => {
-    console.log("remove", id);
+    dispatch(removeFromCart(id));
+  };
+
+  const checkoutHandler = () => {
+    navigate("/login?redirect=shipping");
   };
 
   return (
@@ -94,12 +99,29 @@ const CartScreen = () => {
       <Col md={4}>
         <Card>
           <ListGroup variant="flush">
-            <ListGroup.Item>
+            <ListGroup.Item className="mb-3">
               <h2>
                 Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
               </h2>
+              $
+              {cartItems
+                .reduce((acc, item) => acc + item.qty * item.price, 0)
+                .toFixed(2)}
             </ListGroup.Item>
           </ListGroup>
+
+          <ListGroup.Item>
+            <div className="d-grid">
+              <Button
+                type="button"
+                size="lg"
+                disabled={cartItems.length === 0}
+                onClick={checkoutHandler}
+              >
+                Proceed to Checkout
+              </Button>
+            </div>
+          </ListGroup.Item>
         </Card>
       </Col>
     </Row>
