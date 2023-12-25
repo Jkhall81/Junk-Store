@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
+import Message from "../components/Message";
+import Loader from "../components/Loader";
 import { useSearchParams } from "react-router-dom";
 import { useLoginMutation } from "../redux/services/userApi";
 import { userLoginRequest } from "../redux/reducers/user.slice";
@@ -13,7 +15,7 @@ const LoginScreen = () => {
   const redirect = searchParams.get("redirect");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [login, { isLoading }] = useLoginMutation();
+  const [login, { isLoading, error }] = useLoginMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -24,11 +26,20 @@ const LoginScreen = () => {
       dispatch(userLoginRequest({ ...userData, username }));
       setUsername("");
       setPassword("");
-      navigate("/success");
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
   };
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    <Message variant="danger">Error: {error.data.detail}</Message>;
+  }
+
   return (
     <FormContainer>
       <h1>Sign In</h1>

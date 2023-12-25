@@ -15,10 +15,12 @@ const userSlice = createSlice({
   reducers: {
     userLoginRequest: (state, action) => {
       state.error = null;
-      const { username, access } = action.payload;
+      const { username, access, refresh, id } = action.payload;
       state.userInfo = {
         username,
         access,
+        refresh,
+        id,
       };
       localStorage.setItem("userInfo", JSON.stringify(state.userInfo));
     },
