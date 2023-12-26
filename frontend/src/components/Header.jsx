@@ -1,6 +1,5 @@
 import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
+import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { userLogout } from "../redux/reducers/user.slice";
@@ -37,9 +36,25 @@ const Header = () => {
                   </Nav.Link>
                 </LinkContainer>
               ) : (
-                <Nav.Link onClick={handleLogout}>
-                  <i className="fas fa-user px-1"></i>Logout
-                </Nav.Link>
+                <NavDropdown
+                  title={
+                    <>
+                      <i className="fas fa-user px-1"></i>
+                      {userInfo.username}
+                    </>
+                  }
+                  id="username"
+                >
+                  <LinkContainer to="/profile">
+                    <NavDropdown.Item>
+                      <i className="fas fa-user px-1"></i>Profile
+                    </NavDropdown.Item>
+                  </LinkContainer>
+
+                  <NavDropdown.Item onClick={handleLogout}>
+                    <i className="fas fa-user px-1"></i>Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
               )}
             </Nav>
           </Navbar.Collapse>
