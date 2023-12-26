@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +11,7 @@ import { useGetUserByIdQuery } from "../redux/services/userDetailApi";
 
 const ProfileScreen = () => {
   const id = useSelector((state) => state.user?.userInfo?.id);
+
   const { data: user, isLoading, error } = useGetUserByIdQuery(id);
   const [first_name, setFirst_name] = useState("");
   const [last_name, setLast_name] = useState("");
@@ -20,6 +21,14 @@ const ProfileScreen = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  console.log(user);
+  useEffect(() => {
+    if (!id) {
+      navigate("/login");
+    }
+  }, [navigate, id]);
+
   const submitHandler = async (e) => {
     e.preventDefault();
     try {

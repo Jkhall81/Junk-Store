@@ -7,6 +7,7 @@ from drf_yasg.utils import swagger_serializer_method
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.hashers import make_password
+from datetime import timedelta
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -95,8 +96,13 @@ class UserSerializerWithToken(UserSerializer):
         fields = ['_id', 'id', 'username', 'email', 'name', 'isAdmin', 'token']
         
     def get_token(self, obj):
-        token = RefreshToken.for_user(obj)
-        return str(token.access_token)
+        refresh = RefreshToken.for_user(obj)
+        access_token = refresh.access_token
+        
+        return {
+            'refresh': str(refresh),
+            'access': str(access_token),
+        }
     
         
 class ReviewSerializer(serializers.ModelSerializer):
