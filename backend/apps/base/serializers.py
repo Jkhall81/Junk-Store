@@ -1,10 +1,12 @@
 from rest_framework import serializers
+from rest_framework.response import Response
 from .models import *
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from drf_yasg.utils import swagger_serializer_method
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.hashers import make_password
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -67,6 +69,23 @@ class UserSerializer(serializers.ModelSerializer):
         if name == '':
             name = obj.email
         return name
+    
+    def update(self, instance, validated_data):
+        if 'first_name' in validated_data:
+            instance.first_name = validated_data['first_name']
+            
+        if 'last_name' in validated_data:
+            instance.last_name = validated_data['last_name']
+            
+        if 'email' in validated_data:
+            instance.email = validated_data['email']
+        
+        if 'password' in validated_data and validated_data['password']:
+            instance.password = make_password(validated_data['password'])
+        
+        instance.save()
+        
+        return instance
     
 
 class UserSerializerWithToken(UserSerializer):

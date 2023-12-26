@@ -82,6 +82,8 @@ const RegisterScreen = () => {
           <Form.Label>Email Address</Form.Label>
           <Form.Control
             type="email"
+            required
+            autoComplete="username"
             placeholder="Enter Email"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -92,7 +94,9 @@ const RegisterScreen = () => {
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
+            required
             placeholder="Enter Password"
+            autoComplete="new-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
@@ -102,7 +106,9 @@ const RegisterScreen = () => {
           <Form.Label>Confirm Password</Form.Label>
           <Form.Control
             type="password"
+            required
             placeholder="Confirm Password"
+            autoComplete="new-password"
             value={password2}
             onChange={(e) => setPassword2(e.target.value)}
           ></Form.Control>
@@ -112,6 +118,7 @@ const RegisterScreen = () => {
           <Form.Label>First Name</Form.Label>
           <Form.Control
             type="text"
+            required
             placeholder="Enter First Name"
             value={first_name}
             onChange={(e) => setFirst_name(e.target.value)}
@@ -122,6 +129,7 @@ const RegisterScreen = () => {
           <Form.Label>Last Name</Form.Label>
           <Form.Control
             type="text"
+            required
             placeholder="Enter Last Name"
             value={last_name}
             onChange={(e) => setLast_name(e.target.value)}

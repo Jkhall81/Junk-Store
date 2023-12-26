@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 
 const LoginScreen = () => {
   const [searchParams] = useSearchParams();
-  const redirect = searchParams.get("redirect");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [login, { isLoading, error }] = useLoginMutation();
@@ -69,10 +68,7 @@ const LoginScreen = () => {
       </Form>
       <Row className="py-3">
         <Col>
-          New Customer?{" "}
-          <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>
-            Register
-          </Link>
+          New Customer? <Link to={"/register"}>Register</Link>
         </Col>
       </Row>
     </FormContainer>
