@@ -2,7 +2,7 @@ import { api } from "./api";
 
 export const registerApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation({
+    register: builder.mutation({
       query: (credentials) => ({
         url: "/register/",
         method: "POST",

@@ -11,12 +11,14 @@ const registerSlice = createSlice({
   reducers: {
     userRegisterRequest: (state, action) => {
       state.error = null;
-      const { username, first_name, last_name, password } = action.payload;
+      const { username, first_name, last_name, password, password2 } =
+        action.payload;
       state.userInfo = {
         username,
         first_name,
         last_name,
         password,
+        password2,
       };
       localStorage.setItem("userInfo", JSON.stringify(state.userInfo));
     },

@@ -3,10 +3,10 @@ import { api } from "./api";
 export const userApi = api.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
-      query: (credentials) => ({
+      query: ({ username, password }) => ({
         url: "/token/",
         method: "POST",
-        body: { ...credentials },
+        body: { username, password },
       }),
     }),
   }),
