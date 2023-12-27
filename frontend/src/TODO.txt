@@ -1,0 +1,2 @@
+1. wrong login credentials error message not showing
+2. logging out from the profile page, leaves you in a blank profile page.

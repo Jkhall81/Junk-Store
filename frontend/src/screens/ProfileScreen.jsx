@@ -7,17 +7,19 @@ import Message from "../components/Message";
 import { userDetailRequest } from "../redux/reducers/userDetail.slice";
 import { useNavigate } from "react-router-dom";
 import { useGetUserByIdQuery } from "../redux/services/userDetailApi";
+import { useUpdateMutation } from "../redux/services/updateApi";
+import { userUpdateRequest } from "../redux/reducers/update.slice";
 
 const ProfileScreen = () => {
-  const id = useSelector((state) => state.user?.userInfo?.id);
   const email = useSelector((state) => state.user.userInfo.username);
+  const id = useSelector((state) => state.user?.userInfo?.id);
   const { data: user, isLoading, error } = useGetUserByIdQuery(id);
-  console.log(user);
   const [first_name, setFirst_name] = useState("");
   const [last_name, setLast_name] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [username, setUsername] = useState("");
+  const [update] = useUpdateMutation();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,18 +28,37 @@ const ProfileScreen = () => {
     if (!id) {
       navigate("/login");
     } else {
-      setFirst_name(user.first_name);
-      setLast_name(user.last_name);
+      setFirst_name(user?.first_name || "");
+      setLast_name(user?.last_name || "");
       setUsername(email);
     }
   }, [navigate, user, id, email]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    console.log("initial id:", id);
     if (password != password2) {
       console.log("passwords dont match");
-    } else {
-      console.log("updating");
+    } else if (password == password2) {
+      console.log("updating with password");
+      console.log(id);
+      try {
+        const userData = await update({
+          id,
+          username,
+          first_name,
+          last_name,
+          password,
+        }).unwrap();
+        dispatch(
+          userUpdateRequest({
+            ...userData,
+          })
+        );
+        location.reload();
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 

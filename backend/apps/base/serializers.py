@@ -53,10 +53,12 @@ class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
     _id = serializers.SerializerMethodField(read_only=True)
     isAdmin = serializers.SerializerMethodField(read_only=True)
+    password = serializers.CharField(write_only=True, allow_blank=True, required=False)
+    
     
     class Meta:
         model = User
-        fields = ['_id', 'id', 'email', 'name', 'isAdmin', 'first_name', 'last_name']
+        fields = ['_id', 'id', 'username', 'name', 'isAdmin', 'first_name', 'last_name', 'password']
         
         
     def get_isAdmin(self, obj):
@@ -78,8 +80,8 @@ class UserSerializer(serializers.ModelSerializer):
         if 'last_name' in validated_data:
             instance.last_name = validated_data['last_name']
             
-        if 'email' in validated_data:
-            instance.email = validated_data['email']
+        if 'username' in validated_data:
+            instance.email = validated_data['username']
         
         if 'password' in validated_data and validated_data['password']:
             instance.password = make_password(validated_data['password'])

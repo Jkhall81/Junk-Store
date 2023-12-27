@@ -3,10 +3,10 @@ import { api } from "./api";
 export const updateApi = api.injectEndpoints({
   endpoints: (builder) => ({
     update: builder.mutation({
-      query: (credentials, id) => ({
-        url: `/users/${id}`,
+      query: (credentials) => ({
+        url: `/users/${credentials.id}/`,
         method: "PATCH",
-        body: { ...credentials },
+        body: credentials,
       }),
     }),
   }),

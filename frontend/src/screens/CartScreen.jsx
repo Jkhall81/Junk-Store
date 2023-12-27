@@ -25,11 +25,11 @@ const CartScreen = () => {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
   useEffect(() => {
-    if (product) {
+    if (id && product) {
       console.log(" useeffect - dispatching addtocart");
       dispatch(addToCart({ product, qty }));
     }
-  }, [dispatch, product, qty]);
+  }, [dispatch, id, product, qty]);
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id));

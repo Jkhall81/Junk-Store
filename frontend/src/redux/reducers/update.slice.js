@@ -15,14 +15,17 @@ const updateSlice = createSlice({
   reducers: {
     userUpdateRequest: (state, action) => {
       state.error = null;
-      const { username, first_name, last_name, password } = action.payload;
+      const { id, username, first_name, last_name, password } = action.payload;
       state.userInfo = {
+        id,
         username,
         first_name,
         last_name,
         password,
       };
-      localStorage.setItem("userInfo", JSON.stringify(state.userInfo));
+      const currentLocalStorage = JSON.parse(localStorage.getItem("userInfo"));
+      currentLocalStorage.username = username;
+      localStorage.setItem("userInfo", JSON.stringify(currentLocalStorage));
     },
     userUpdateSuccess: (state, action) => {
       state.userInfo = action.payload;
