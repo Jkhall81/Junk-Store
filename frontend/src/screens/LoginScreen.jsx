@@ -4,16 +4,15 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { useSearchParams } from "react-router-dom";
 import { useLoginMutation } from "../redux/services/userApi";
 import { userLoginRequest } from "../redux/reducers/user.slice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const LoginScreen = () => {
-  const [searchParams] = useSearchParams();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showError, setShowError] = useState(false);
   const [login, { isLoading, error }] = useLoginMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,6 +27,10 @@ const LoginScreen = () => {
       navigate("/");
     } catch (error) {
       console.log(error);
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 3000);
     }
   };
 
@@ -35,8 +38,8 @@ const LoginScreen = () => {
     return <Loader />;
   }
 
-  if (error) {
-    <Message variant="danger">Error: {error.data.detail}</Message>;
+  if (showError) {
+    return <Message variant="danger">Error: {error.data.detail}</Message>;
   }
 
   return (
