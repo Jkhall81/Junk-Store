@@ -27,12 +27,6 @@ const updateSlice = createSlice({
       currentLocalStorage.username = username;
       localStorage.setItem("userInfo", JSON.stringify(currentLocalStorage));
     },
-    userUpdateSuccess: (state, action) => {
-      state.userInfo = action.payload;
-    },
-    userUpdateFail: (state, action) => {
-      state.error = action.payload;
-    },
   },
 });
 

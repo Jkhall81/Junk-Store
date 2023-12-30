@@ -5,6 +5,7 @@ import { userApi } from "./services/userApi";
 import { registerApi } from "./services/registerApi";
 import { updateApi } from "./services/updateApi";
 import { userDetailApi } from "./services/userDetailApi";
+import { shippingAddressApi } from "./services/shippingAddressApi";
 import { productsReducer } from "./reducers/products.slice";
 import { cartReducer } from "./reducers/cart.slice";
 import { userReducer } from "./reducers/user.slice";
@@ -17,6 +18,7 @@ const store = configureStore({
     products: productsReducer,
     [productsApi.reducerPath]: productsApi.reducer,
     cart: cartReducer,
+    [shippingAddressApi.reducerPath]: shippingAddressApi.reducer,
     user: userReducer,
     [userApi.reducerPath]: userApi.reducer,
     register: registerReducer,

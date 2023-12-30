@@ -33,7 +33,7 @@ const Header = () => {
                 </Nav.Link>
               </LinkContainer>
               {!userInfo ? (
-                <LinkContainer to="/auth/login">
+                <LinkContainer to="/login">
                   <Nav.Link>
                     <i className="fas fa-user px-1"></i>Login
                   </Nav.Link>

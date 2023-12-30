@@ -32,7 +32,12 @@ const cartSlice = createSlice({
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
     saveShippingAddress: (state, action) => {
-      state.shippingAddress = action.payload;
+      const { addressData } = action.payload;
+      state.shippingAddress = { ...addressData };
+      localStorage.setItem(
+        "shippingAddress",
+        JSON.stringify(state.shippingAddress)
+      );
     },
     savePaymentMethod: (state, action) => {
       state.paymentMethod = action.payload;

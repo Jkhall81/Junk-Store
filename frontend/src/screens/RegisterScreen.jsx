@@ -14,6 +14,7 @@ import { userLoginRequest } from "../redux/reducers/user.slice";
 const RegisterScreen = () => {
   const [register, { isLoading, error }] = useRegisterMutation();
   const [login] = useLoginMutation();
+  const [showError, setShowError] = useState(false);
   const [first_name, setFirst_name] = useState("");
   const [last_name, setLast_name] = useState("");
   const [password, setPassword] = useState("");
@@ -47,6 +48,10 @@ const RegisterScreen = () => {
       navigate("/");
     } catch (error) {
       console.log(error);
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 3000);
     }
   };
 
@@ -54,7 +59,7 @@ const RegisterScreen = () => {
     return <Loader />;
   }
 
-  if (error) {
+  if (showError) {
     if (error.data?.password) {
       return (
         <div>

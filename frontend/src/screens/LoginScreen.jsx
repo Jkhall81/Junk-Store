@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
@@ -7,7 +7,7 @@ import Loader from "../components/Loader";
 import { useLoginMutation } from "../redux/services/userApi";
 import { userLoginRequest } from "../redux/reducers/user.slice";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const LoginScreen = () => {
   const [username, setUsername] = useState("");
@@ -16,6 +16,17 @@ const LoginScreen = () => {
   const [login, { isLoading, error }] = useLoginMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const redirect = params.get("redirect");
+
+    const userInfoFromStorage = localStorage.getItem("userInfo");
+    if (userInfoFromStorage) {
+      navigate(redirect);
+    }
+  }, [location, navigate]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -50,6 +61,7 @@ const LoginScreen = () => {
           <Form.Label>Email Address</Form.Label>
           <Form.Control
             type="email"
+            autoComplete="username"
             placeholder="Enter Email"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -60,6 +72,7 @@ const LoginScreen = () => {
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
+            autoComplete="current-password"
             placeholder="Enter Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

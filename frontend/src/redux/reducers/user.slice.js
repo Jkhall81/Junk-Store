@@ -24,12 +24,6 @@ const userSlice = createSlice({
       };
       localStorage.setItem("userInfo", JSON.stringify(state.userInfo));
     },
-    userLoginSuccess: (state, action) => {
-      state.userInfo = action.payload;
-    },
-    userLoginFail: (state, action) => {
-      state.error = action.payload;
-    },
     userLogout: (state) => {
       state.userInfo = null;
       localStorage.removeItem("userInfo");

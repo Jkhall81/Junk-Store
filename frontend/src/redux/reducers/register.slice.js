@@ -22,12 +22,6 @@ const registerSlice = createSlice({
       };
       localStorage.setItem("userInfo", JSON.stringify(state.userInfo));
     },
-    userRegisterSuccess: (state, action) => {
-      state.userInfo = action.payload;
-    },
-    userRegisterFail: (state, action) => {
-      state.error = action.payload;
-    },
     userLogout: (state) => {
       state.userInfo = null;
       localStorage.removeItem("userInfo");
