@@ -6,12 +6,14 @@ import { registerApi } from "./services/registerApi";
 import { updateApi } from "./services/updateApi";
 import { userDetailApi } from "./services/userDetailApi";
 import { shippingAddressApi } from "./services/shippingAddressApi";
+import { orderApi } from "./services/orderApi";
 import { productsReducer } from "./reducers/products.slice";
 import { cartReducer } from "./reducers/cart.slice";
 import { userReducer } from "./reducers/user.slice";
 import { registerReducer } from "./reducers/register.slice";
 import { updateReducer } from "./reducers/update.slice";
 import { userDetailReducer } from "./reducers/userDetail.slice";
+import { orderReducer } from "./reducers/order.slice";
 
 const store = configureStore({
   reducer: {
@@ -27,6 +29,8 @@ const store = configureStore({
     [updateApi.reducerPath]: updateApi.reducer,
     userDetail: userDetailReducer,
     [userDetailApi.reducerPath]: userDetailApi.reducer,
+    order: orderReducer,
+    [orderApi.reducerPath]: orderApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),

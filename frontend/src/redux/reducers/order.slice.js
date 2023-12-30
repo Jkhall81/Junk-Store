@@ -6,7 +6,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   order: {},
-  orderItem: {},
+  orderItem: [],
 };
 
 const orderSlice = createSlice({
@@ -20,8 +20,8 @@ const orderSlice = createSlice({
       localStorage.setItem("order", JSON.stringify(state.order));
     },
     addOrderItem: (state, action) => {
-      const { productId, orderId, name, qty, price, image } = action.payload;
-      state.orderItem = { productId, orderId, name, qty, price, image };
+      const { orderItemData } = action.payload;
+      state.orderItem.push({ ...orderItemData });
       localStorage.setItem("orderItem", JSON.stringify(state.orderItem));
     },
   },

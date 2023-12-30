@@ -11,7 +11,7 @@ export const orderApi = api.injectEndpoints({
     }),
     postOrderItem: builder.mutation({
       query: (data) => ({
-        url: "/orderItems/",
+        url: "/orderitems/",
         method: "POST",
         body: { ...data },
       }),

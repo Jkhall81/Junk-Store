@@ -26,10 +26,14 @@ const userSlice = createSlice({
     },
     userLogout: (state) => {
       state.userInfo = null;
+      state.cartItems = null;
+      state.shippingAddress = null;
       localStorage.removeItem("userInfo");
       localStorage.removeItem("cartItems");
       localStorage.removeItem("paymentMethod");
       localStorage.removeItem("shippingAddress");
+      localStorage.removeItem("order");
+      localStorage.removeItem("orderItem");
     },
   },
 });

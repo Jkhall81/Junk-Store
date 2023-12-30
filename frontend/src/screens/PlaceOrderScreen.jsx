@@ -28,16 +28,27 @@ const PlaceOrderScreen = () => {
     Number(cart.shippingPrice)
   ).toFixed(2);
 
-  const placeOrder = () => {
+  const placeOrder = async () => {
     try {
-      const orderData = postOrder({
-        userId: userInfo.id,
+      const orderData = await postOrder({
+        user: userInfo.id,
         paymentMethod: cart.paymentMethod,
         taxPrice: cart.taxPrice,
         shippingPrice: cart.shippingPrice,
         totalPrice: cart.totalPrice,
       }).unwrap();
-      dispatch(addOrder(orderData));
+      dispatch(addOrder({ orderData }));
+      for (const item of cart.cartItems) {
+        const orderItemData = await postOrderItem({
+          product: item._id,
+          order: orderData._id,
+          name: item.name,
+          qty: item.qty,
+          price: item.price,
+          image: item.image,
+        }).unwrap();
+        dispatch(addOrderItem({ orderItemData }));
+      }
     } catch (error) {
       console.log(error);
     }

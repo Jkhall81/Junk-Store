@@ -20,22 +20,21 @@ const ShippingScreen = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (!cart) {
-      try {
-        const addressData = await postAddress({
-          address,
-          city,
-          postalCode,
-          country,
-        }).unwrap();
-        dispatch(saveShippingAddress({ addressData }));
-        setAddress("");
-        setCity("");
-        setPostalCode("");
-        setCountry("");
-      } catch (error) {
-        console.log(error);
-      }
+
+    try {
+      const addressData = await postAddress({
+        address,
+        city,
+        postalCode,
+        country,
+      }).unwrap();
+      dispatch(saveShippingAddress({ addressData }));
+      setAddress("");
+      setCity("");
+      setPostalCode("");
+      setCountry("");
+    } catch (error) {
+      console.log(error);
     }
     navigate("/payment");
   };

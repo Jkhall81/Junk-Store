@@ -129,3 +129,22 @@ class ShippingAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShippingAddress
         fields= '__all__'
+        
+    def create(self, validated_data):
+        address = validated_data.get('address', None)
+        city = validated_data.get('city', None)
+        postalCode = validated_data.get('postalCode', None)
+        country = validated_data.get('country', None)
+        
+        existing_entry = ShippingAddress.objects.filter(
+            address=address,
+            city=city,
+            postalCode=postalCode,
+            country=country
+        ).first()
+        
+        if existing_entry:
+            return existing_entry
+        
+        shipping_address = ShippingAddress.objects.create(**validated_data)
+        return shipping_address
