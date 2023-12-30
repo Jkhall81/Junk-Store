@@ -8,14 +8,11 @@ import { savePaymentMethod } from "../redux/reducers/cart.slice";
 
 const PaymentScreen = () => {
   const cart = useSelector((state) => state.cart);
-  const state = useSelector((state) => state);
-  console.log(state);
   const { shippingAddress } = cart;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [paymentMethod, setPaymentMethod] = useState("Paypal");
-  console.log("payment method before dispatch:", paymentMethod);
 
   if (!shippingAddress.address) {
     navigate("/shipping");
@@ -24,7 +21,6 @@ const PaymentScreen = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(savePaymentMethod(paymentMethod));
-    console.log("paymentMethod after dispatch:", paymentMethod);
     navigate("/placeorder");
   };
 
