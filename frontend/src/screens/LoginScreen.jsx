@@ -26,7 +26,7 @@ const LoginScreen = () => {
     if (userInfoFromStorage) {
       navigate(redirect);
     }
-  }, [location, navigate]);
+  }, [location.search, navigate]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
