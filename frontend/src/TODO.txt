@@ -3,3 +3,7 @@
 3. undefined product/id get request firing off when i go into the cartscreen.
 4. after user info update, dispatch login, to update everything.  this way is cleaner.
 ---5. check if passwords don't match, when registering.---
+6. submit order , orderitem, add order id to shipping address data.
+    ---a. create reducers---
+    ---b. create api service---
+7. Make sure everythin in 6 works

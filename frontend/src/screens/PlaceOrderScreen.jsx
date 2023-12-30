@@ -4,9 +4,18 @@ import { useDispatch, useSelector } from "react-redux";
 import CheckoutSteps from "../components/CheckoutSteps";
 import Message from "../components/Message";
 import { Link } from "react-router-dom";
+import { addOrder, addOrderItem } from "../redux/reducers/order.slice";
+import {
+  usePostOrderMutation,
+  usePostOrderItemMutation,
+} from "../redux/services/orderApi";
 
 const PlaceOrderScreen = () => {
   const { ...cart } = useSelector((state) => state.cart);
+  const { userInfo } = useSelector((state) => state.user);
+  const [postOrder] = usePostOrderMutation();
+  const [postOrderItem] = usePostOrderItemMutation();
+  const dispatch = useDispatch();
 
   cart.itemsPrice = cart.cartItems
     .reduce((acc, item) => acc + item.price * item.qty, 0)
@@ -20,7 +29,18 @@ const PlaceOrderScreen = () => {
   ).toFixed(2);
 
   const placeOrder = () => {
-    console.log("placed order");
+    try {
+      const orderData = postOrder({
+        userId: userInfo.id,
+        paymentMethod: cart.paymentMethod,
+        taxPrice: cart.taxPrice,
+        shippingPrice: cart.shippingPrice,
+        totalPrice: cart.totalPrice,
+      }).unwrap();
+      dispatch(addOrder(orderData));
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div>

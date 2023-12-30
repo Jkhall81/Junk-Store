@@ -27,6 +27,9 @@ const userSlice = createSlice({
     userLogout: (state) => {
       state.userInfo = null;
       localStorage.removeItem("userInfo");
+      localStorage.removeItem("cartItems");
+      localStorage.removeItem("paymentMethod");
+      localStorage.removeItem("shippingAddress");
     },
   },
 });
