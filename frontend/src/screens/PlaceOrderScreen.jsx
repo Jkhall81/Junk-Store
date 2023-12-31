@@ -9,6 +9,7 @@ import {
   usePostOrderMutation,
   usePostOrderItemMutation,
 } from "../redux/services/orderApi";
+import { clearCartItems } from "../redux/reducers/cart.slice";
 
 const PlaceOrderScreen = () => {
   const { ...cart } = useSelector((state) => state.cart);
@@ -49,6 +50,7 @@ const PlaceOrderScreen = () => {
           image: item.image,
         }).unwrap();
         dispatch(addOrderItem({ orderItemData }));
+        dispatch(clearCartItems());
         navigate("/profile");
       }
     } catch (error) {

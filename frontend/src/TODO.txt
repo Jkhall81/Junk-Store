@@ -9,3 +9,4 @@
 7. ---Make sure everythin in 6 works---
 8. ---make sure when order is place, that item on stock value is modified.---
 9. ---Clear cart after logging out. refresh after logging out does it---
+10.  ---Clear cart after placing order.---
