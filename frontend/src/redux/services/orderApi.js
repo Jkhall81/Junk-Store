@@ -16,7 +16,31 @@ export const orderApi = api.injectEndpoints({
         body: { ...data },
       }),
     }),
+    getOrders: builder.query({
+      query: () => ({
+        url: "/orders/",
+        method: "GET",
+      }),
+    }),
+    getOrderById: builder.query({
+      query: (data) => ({
+        url: `/orders/${data.id}`,
+        method: "GET",
+      }),
+    }),
+    getOrderItemByOrderId: builder.query({
+      query: (itemData) => ({
+        url: `/orderitems/by_order/${itemData.id}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { usePostOrderMutation, usePostOrderItemMutation } = orderApi;
+export const {
+  usePostOrderMutation,
+  usePostOrderItemMutation,
+  useGetOrdersQuery,
+  useGetOrderByIdQuery,
+  useGetOrderItemByOrderIdQuery,
+} = orderApi;

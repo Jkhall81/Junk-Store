@@ -9,7 +9,15 @@ export const shippingAddressApi = api.injectEndpoints({
         body: { ...data },
       }),
     }),
+    patchAddress: builder.mutation({
+      query: (data) => ({
+        url: `/shippingaddress/${data.id}/`,
+        method: "PATCH",
+        body: { ...data },
+      }),
+    }),
   }),
 });
 
-export const { usePostAddressMutation } = shippingAddressApi;
+export const { usePostAddressMutation, usePatchAddressMutation } =
+  shippingAddressApi;

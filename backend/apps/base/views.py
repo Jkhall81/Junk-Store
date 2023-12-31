@@ -1,4 +1,5 @@
 from rest_framework import viewsets, status, generics
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from .serializers import *
 from .models import *
@@ -75,7 +76,25 @@ class OrderItemViewSet(viewsets.ModelViewSet):
         product.save()
 
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers) 
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    
+    @action(detail=False, methods=['GET'], url_path=r'by_order/(?P<order_id>[^/.]+)')
+    def by_order(self, request, *args, **kwargs):
+        order_id = self.kwargs.get('order_id')
+        if not order_id:
+            return Response({'error': 'Order ID parameter is required Homie!'}, status=400)
+        
+        shipping_address = ShippingAddress.objects.filter(order=order_id).first()
+        shipping_address_serializer = ShippingAddressSerializer(shipping_address)
+        
+        order_items = OrderItem.objects.filter(order=order_id)
+        serializer = self.get_serializer(order_items, many=True)
+        
+        response_data = {
+            'order_items': serializer.data,
+            'shipping_address': shipping_address_serializer.data,
+        }
+        return Response(response_data, status=status.HTTP_200_OK) 
     
     
 class ShippingAddressViewSet(viewsets.ModelViewSet):

@@ -1,76 +1,28 @@
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import CheckoutSteps from "../components/CheckoutSteps";
 import Message from "../components/Message";
 import { Link } from "react-router-dom";
-import { addOrder, addOrderItem } from "../redux/reducers/order.slice";
-import {
-  usePostOrderMutation,
-  usePostOrderItemMutation,
-} from "../redux/services/orderApi";
-import { usePatchAddressMutation } from "../redux/services/shippingAddressApi";
-import { clearCartItems } from "../redux/reducers/cart.slice";
+import { useGetOrderByIdQuery } from "../redux/services/orderApi";
+import { useGetOrderItemByOrderIdQuery } from "../redux/services/orderApi";
 
-const PlaceOrderScreen = () => {
+const OrderScreen = () => {
   const { ...cart } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.user);
-  const [postOrder] = usePostOrderMutation();
-  const [postOrderItem] = usePostOrderItemMutation();
-  const [patchAddress] = usePatchAddressMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { id } = useParams();
+  const { data: order } = useGetOrderByIdQuery({ id });
+  const orderItem = useGetOrderItemByOrderIdQuery({ id });
+  console.log(order);
+  console.log(orderItem.data);
 
-  cart.itemsPrice = cart.cartItems
-    .reduce((acc, item) => acc + item.price * item.qty, 0)
-    .toFixed(2);
-  cart.shippingPrice = (cart.itemsPrice > 100 ? 0 : 10).toFixed(2);
-  cart.taxPrice = (0.082 * cart.itemsPrice).toFixed(2);
-  cart.totalPrice = (
-    Number(cart.itemsPrice) +
-    Number(cart.taxPrice) +
-    Number(cart.shippingPrice)
-  ).toFixed(2);
-
-  const placeOrder = async () => {
-    try {
-      const orderData = await postOrder({
-        user: userInfo.id,
-        paymentMethod: cart.paymentMethod,
-        taxPrice: cart.taxPrice,
-        shippingPrice: cart.shippingPrice,
-        totalPrice: cart.totalPrice,
-      }).unwrap();
-      const orderId = orderData._id;
-      const shippingAddressObj = JSON.parse(
-        localStorage.getItem("shippingAddress")
-      );
-      const addOrderToShippingAddress = await patchAddress({
-        id: shippingAddressObj._id,
-        order: orderId,
-      }).unwrap();
-      dispatch(addOrder({ orderData }));
-      for (const item of cart.cartItems) {
-        const orderItemData = await postOrderItem({
-          product: item._id,
-          order: orderData._id,
-          name: item.name,
-          qty: item.qty,
-          price: item.price,
-          image: item.image,
-        }).unwrap();
-        dispatch(addOrderItem({ orderItemData }));
-        dispatch(clearCartItems());
-        navigate("/profile");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const placeOrder = async () => {};
   return (
     <div>
-      <CheckoutSteps step1 step2 step3 step4 />
       <Row>
+        <h1>Order: {id}</h1>
         <Col md={8}>
           <ListGroup variant="flush">
             <ListGroup.Item>
@@ -179,4 +131,4 @@ const PlaceOrderScreen = () => {
   );
 };
 
-export default PlaceOrderScreen;
+export default OrderScreen;
