@@ -14,9 +14,19 @@ const OrderScreen = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { data: order } = useGetOrderByIdQuery({ id });
-  const orderItem = useGetOrderItemByOrderIdQuery({ id });
+  const { data: orderItem } = useGetOrderItemByOrderIdQuery({ id });
+  const [shippingAddress, setShippingAddress] = useState({});
+  const name = JSON.parse(localStorage.getItem("userInfo"));
   console.log(order);
-  console.log(orderItem.data);
+  // console.log(orderItem);
+  // console.log(shippingAddress);
+
+  useEffect(() => {
+    if (orderItem) {
+      const { shipping_address } = orderItem;
+      setShippingAddress(shipping_address);
+    }
+  }, [orderItem]);
 
   const placeOrder = async () => {};
   return (
@@ -28,10 +38,12 @@ const OrderScreen = () => {
             <ListGroup.Item>
               <h2>Shipping</h2>
               <p>
+                Name: {name.first_name} {name.last_name}
+              </p>
+              <p>
                 <strong>Shipping: </strong>
-                {cart.shippingAddress.address}, {cart.shippingAddress.city}{" "}
-                {cart.shippingAddress.postalCode},{" "}
-                {cart.shippingAddress.country}
+                {shippingAddress.address}, {shippingAddress.city}{" "}
+                {shippingAddress.postalCode}, {shippingAddress.country}
               </p>
             </ListGroup.Item>
 
@@ -39,17 +51,17 @@ const OrderScreen = () => {
               <h2>Payment Method</h2>
               <p>
                 <strong>Method: </strong>
-                {cart.paymentMethod}
+                {order?.paymentMethod}
               </p>
             </ListGroup.Item>
 
             <ListGroup.Item>
               <h2>Order Items</h2>
-              {cart.cartItems.length === 0 ? (
-                <Message variant="info">Your cart is empty</Message>
+              {orderItem?.order_items.length === 0 ? (
+                <Message variant="info">No items in this order!</Message>
               ) : (
                 <ListGroup variant="flush">
-                  {cart.cartItems.map((item, index) => (
+                  {orderItem?.order_items.map((item, index) => (
                     <ListGroup.Item key={index}>
                       <Row>
                         <Col md={2}>
@@ -87,41 +99,34 @@ const OrderScreen = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items:</Col>
-                  <Col>${cart.itemsPrice}</Col>
+                  <Col>
+                    $
+                    {orderItem?.order_items
+                      .reduce((acc, x) => acc + Number(x.price), 0)
+                      .toFixed(2)}
+                  </Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
                   <Col>Shipping:</Col>
-                  <Col>${cart.shippingPrice}</Col>
+                  <Col>${order?.shippingPrice}</Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
                   <Col>Tax:</Col>
-                  <Col>${cart.taxPrice}</Col>
+                  <Col>${order?.taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
                   <Col>Total:</Col>
-                  <Col>${cart.totalPrice}</Col>
+                  <Col>${order?.totalPrice}</Col>
                 </Row>
-              </ListGroup.Item>
-
-              <ListGroup.Item>
-                <div className="d-grid">
-                  <Button
-                    type="button"
-                    disabled={cart.cartItems.length === 0}
-                    onClick={placeOrder}
-                  >
-                    Place Order
-                  </Button>
-                </div>
               </ListGroup.Item>
             </ListGroup>
           </Card>

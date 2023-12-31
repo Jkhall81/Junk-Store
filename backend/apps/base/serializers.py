@@ -104,6 +104,8 @@ class UserSerializerWithToken(UserSerializer):
         return {
             'refresh': str(refresh),
             'access': str(access_token),
+            'first_name': obj.first_name,
+            'last_name': obj.last_name,
         }
     
         
@@ -144,6 +146,9 @@ class ShippingAddressSerializer(serializers.ModelSerializer):
         ).first()
         
         if existing_entry:
+            if existing_entry.order:
+                existing_entry = ShippingAddress.objects.create(**validated_data)
+                
             return existing_entry
         
         shipping_address = ShippingAddress.objects.create(**validated_data)

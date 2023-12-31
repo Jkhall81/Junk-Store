@@ -15,8 +15,11 @@ const userSlice = createSlice({
   reducers: {
     userLoginRequest: (state, action) => {
       state.error = null;
-      const { username, access, refresh, id } = action.payload;
+      const { username, access, refresh, id, token } = action.payload;
+      const { first_name, last_name } = token;
       state.userInfo = {
+        first_name,
+        last_name,
         username,
         access,
         refresh,
