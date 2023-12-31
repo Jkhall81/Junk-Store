@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import CheckoutSteps from "../components/CheckoutSteps";
@@ -15,6 +15,7 @@ const PlaceOrderScreen = () => {
   const { userInfo } = useSelector((state) => state.user);
   const [postOrder] = usePostOrderMutation();
   const [postOrderItem] = usePostOrderItemMutation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   cart.itemsPrice = cart.cartItems
@@ -48,6 +49,7 @@ const PlaceOrderScreen = () => {
           image: item.image,
         }).unwrap();
         dispatch(addOrderItem({ orderItemData }));
+        navigate("/profile");
       }
     } catch (error) {
       console.log(error);

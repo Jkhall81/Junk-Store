@@ -4,7 +4,6 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { userDetailRequest } from "../redux/reducers/userDetail.slice";
 import { useNavigate } from "react-router-dom";
 import { useGetUserByIdQuery } from "../redux/services/userDetailApi";
 import { useUpdateMutation } from "../redux/services/updateApi";
