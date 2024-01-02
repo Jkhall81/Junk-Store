@@ -34,6 +34,13 @@ export const orderApi = api.injectEndpoints({
         method: "GET",
       }),
     }),
+    patchOrder: builder.mutation({
+      query: (data) => ({
+        url: `/orders/${data.id}/`,
+        method: "PATCH",
+        body: { ...data },
+      }),
+    }),
   }),
 });
 
@@ -43,4 +50,5 @@ export const {
   useGetOrdersQuery,
   useGetOrderByIdQuery,
   useGetOrderItemByOrderIdQuery,
+  usePatchOrderMutation,
 } = orderApi;

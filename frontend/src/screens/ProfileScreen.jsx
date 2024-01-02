@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Form, Button, Row, Col, Table } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
@@ -8,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useGetUserByIdQuery } from "../redux/services/userDetailApi";
 import { useUpdateMutation } from "../redux/services/updateApi";
 import { userUpdateRequest } from "../redux/reducers/update.slice";
+import { useGetOrdersQuery } from "../redux/services/orderApi";
 
 const ProfileScreen = () => {
   const email = useSelector((state) => state.user.userInfo.username);
@@ -19,7 +21,11 @@ const ProfileScreen = () => {
   const [password2, setPassword2] = useState("");
   const [username, setUsername] = useState("");
   const [update] = useUpdateMutation();
-
+  const {
+    data: orders,
+    isLoading: ordersIsLoading,
+    error: ordersError,
+  } = useGetOrdersQuery();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -153,9 +159,52 @@ const ProfileScreen = () => {
       </Col>
       <Col md={9}>
         <h2>My Orders</h2>
+        {ordersIsLoading ? (
+          <Loader />
+        ) : ordersError ? (
+          <Message variant="danger">{ordersError}</Message>
+        ) : (
+          <Table striped responsive className="table-sm">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Paid</th>
+                <th>Delivered</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders
+                ?.filter((x) => x.user === id)
+                .map((order, index) => (
+                  <tr key={index}>
+                    <td>{order._id}</td>
+                    <td>{order.createdAt.substring(0, 10)}</td>
+                    <td>${order.totalPrice}</td>
+                    <td>
+                      {order.isPaid ? (
+                        order.paidAt.substring(0, 10)
+                      ) : (
+                        <i
+                          className="fas fa-times"
+                          style={{ color: "red" }}
+                        ></i>
+                      )}
+                    </td>
+                    <td>
+                      <LinkContainer to={`/order/${order._id}`}>
+                        <Button className="btn-sm">Details</Button>
+                      </LinkContainer>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </Table>
+        )}
       </Col>
     </Row>
   );
 };
-
 export default ProfileScreen;

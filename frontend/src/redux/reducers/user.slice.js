@@ -37,6 +37,7 @@ const userSlice = createSlice({
       localStorage.removeItem("shippingAddress");
       localStorage.removeItem("order");
       localStorage.removeItem("orderItem");
+      localStorage.removeItem("__paypal_storage__");
     },
   },
 });

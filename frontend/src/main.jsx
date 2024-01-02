@@ -10,7 +10,6 @@ const initialOptions = {
     "AUOYTSvgY-w86-vA1I7n_5as2LvIQ4if1yLiwgwTBLG_91UpPMluLDMb9pBO7bbx_nXsX123insde-MA",
   currency: "USD",
   intent: "capture",
-  "data-sdk-integration-source": "integrationbuilder_sc",
 };
 
 ReactDOM.createRoot(document.getElementById("root")).render(

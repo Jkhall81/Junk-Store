@@ -2,36 +2,55 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import Message from "../components/Message";
+import Loader from "../components/Loader";
 import { Link } from "react-router-dom";
 import { useGetOrderByIdQuery } from "../redux/services/orderApi";
 import { useGetOrderItemByOrderIdQuery } from "../redux/services/orderApi";
-import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
+import { usePatchOrderMutation } from "../redux/services/orderApi";
+import { PayPalButtons } from "@paypal/react-paypal-js";
 
 const OrderScreen = () => {
   const { id } = useParams();
-  const { data: order } = useGetOrderByIdQuery({ id });
+  const [hasPaid, setHasPaid] = useState(null);
+  const { data: order, isLoading } = useGetOrderByIdQuery({ id });
   const { data: orderItem } = useGetOrderItemByOrderIdQuery({ id });
   const [shippingAddress, setShippingAddress] = useState({});
-  const [payPalOrder, setPayPalOrder] = useState(null);
+  const [patchOrder] = usePatchOrderMutation();
   // const [{ isPending }] = usePayPalScriptReducer();
   const name = JSON.parse(localStorage.getItem("userInfo"));
 
   const createOrder = (data, actions) => {
-    return actions.order.create({
-      purchase_units: [
-        {
-          amount: {
-            currency_code: "USD",
-            value: order?.totalPrice,
+    if (order && order.totalPrice) {
+      return actions.order.create({
+        purchase_units: [
+          {
+            amount: {
+              currency_code: "USD",
+              value: order?.totalPrice,
+            },
           },
-        },
-      ],
+        ],
+      });
+    }
+  };
+
+  const onApprove = async () => {
+    await patchOrder({
+      id: id,
+      isPaid: true,
+      paidAt: new Date().toISOString(),
     });
+    setHasPaid(true);
   };
 
   // console.log(order);
-  console.log(orderItem);
+  // console.log(orderItem);
   // console.log(shippingAddress);
+  // console.log(payPalOrder);
+
+  useEffect(() => {
+    setHasPaid(order?.isPaid);
+  }, [order?.isPaid]);
 
   useEffect(() => {
     if (orderItem) {
@@ -42,7 +61,9 @@ const OrderScreen = () => {
 
   return (
     <div>
-      {orderItem ? (
+      {isLoading ? (
+        <Loader />
+      ) : (
         <Row>
           <h1>Order: {id}</h1>
           <Col md={8}>
@@ -79,7 +100,7 @@ const OrderScreen = () => {
                   <strong>Method: </strong>
                   {order?.paymentMethod}
                 </p>
-                {order?.isPaid ? (
+                {hasPaid ? (
                   <Message variant="success">Paid on {order?.paidAt}</Message>
                 ) : (
                   <Message variant="warning">Not paid</Message>
@@ -165,14 +186,13 @@ const OrderScreen = () => {
                   <PayPalButtons
                     style={{ layout: "vertical" }}
                     createOrder={createOrder}
+                    onApprove={onApprove}
                   />
                 </ListGroup.Item>
               )}
             </Card>
           </Col>
         </Row>
-      ) : (
-        <p>Loading...</p>
       )}
     </div>
   );
