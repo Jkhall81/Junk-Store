@@ -15,7 +15,14 @@ export const userApi = api.injectEndpoints({
         method: "GET",
       }),
     }),
+    delete: builder.mutation({
+      query: (id) => ({
+        url: `/users/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useGetUsersQuery } = userApi;
+export const { useLoginMutation, useGetUsersQuery, useDeleteMutation } =
+  userApi;

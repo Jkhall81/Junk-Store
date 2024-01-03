@@ -30,11 +30,9 @@ const userSlice = createSlice({
       localStorage.setItem("userInfo", JSON.stringify(state.userInfo));
     },
     userListRequest: (state, action) => {
-      const { data } = action.payload;
-      state.userList = {
-        ...data,
-      };
-      localStorage.setItem("userInfo", JSON.stringify(state.userInfo));
+      const users = action.payload;
+      state.userList = users;
+      localStorage.setItem("userList", JSON.stringify(state.userList));
     },
     userLogout: (state) => {
       state.userInfo = null;
@@ -48,6 +46,18 @@ const userSlice = createSlice({
       localStorage.removeItem("orderItem");
       localStorage.removeItem("__paypal_storage__");
     },
+
+    userDeleteRequest: (state, action) => {
+      const idToDelete = action.payload;
+
+      const updatedUserList = state.userList.filter(
+        (user) => user._id !== idToDelete
+      );
+
+      state.userList = updatedUserList;
+
+      localStorage.setItem("userList", JSON.stringify(state.userLnfo));
+    },
   },
 });
 
@@ -57,5 +67,6 @@ export const {
   userLoginFail,
   userLogout,
   userListRequest,
+  userDeleteRequest,
 } = userSlice.actions;
 export const userReducer = userSlice.reducer;

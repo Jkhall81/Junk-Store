@@ -1,10 +1,12 @@
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { Table, Button } from "react-bootstrap";
 import { useGetUsersQuery } from "../redux/services/userApi";
 import { userListRequest } from "../redux/reducers/user.slice";
+import { useDeleteMutation } from "../redux/services/userApi";
+import { userDeleteRequest } from "../redux/reducers/user.slice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -13,19 +15,30 @@ const UserListScreen = () => {
   const navigate = useNavigate();
   const { data: users, isLoading, error } = useGetUsersQuery();
   const userInfo = useSelector((state) => state.user.userInfo);
+  const [localUsers, setLocalUsers] = useState([]);
+  const [deleteUser] = useDeleteMutation();
 
   useEffect(() => {
     if (!isLoading) {
       if (userInfo.isAdmin) {
         dispatch(userListRequest(users));
+
+        setLocalUsers(users);
       } else {
         navigate("/login");
       }
     }
-  }, [dispatch, navigate, users, isLoading, userInfo.isAdmin]);
+  }, [dispatch, navigate, users, isLoading, userInfo.isAdmin, setLocalUsers]);
 
-  const deleteHandler = (id) => {
-    console.log("DELETEl", id);
+  const deleteHandler = async (id) => {
+    try {
+      await deleteUser(id);
+      const updatedLocalUsers = localUsers.filter((user) => user._id !== id);
+      setLocalUsers(updatedLocalUsers);
+      dispatch(userDeleteRequest(id));
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
   };
 
   return (
@@ -48,7 +61,7 @@ const UserListScreen = () => {
           </thead>
 
           <tbody>
-            {users.map((user) => (
+            {localUsers.map((user) => (
               <tr key={user._id}>
                 <td>{user._id}</td>
                 <td>

@@ -14,3 +14,4 @@
     order doesn't initially show up on the page.  have to refresh to get it to
     show.
 12.  ---If user is logged in.. do not show the register link in header.---
+
