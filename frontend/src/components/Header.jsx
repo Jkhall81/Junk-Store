@@ -33,11 +33,18 @@ const Header = () => {
                 </Nav.Link>
               </LinkContainer>
               {!userInfo ? (
-                <LinkContainer to="/login">
-                  <Nav.Link>
-                    <i className="fas fa-user px-1"></i>Login
-                  </Nav.Link>
-                </LinkContainer>
+                <Nav>
+                  <LinkContainer to="/login">
+                    <Nav.Link>
+                      <i className="fas fa-user px-1"></i>Login
+                    </Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to="/register">
+                    <Nav.Link>
+                      <i className="fas fa-user px-1"></i>Register
+                    </Nav.Link>
+                  </LinkContainer>
+                </Nav>
               ) : (
                 <NavDropdown
                   title={
@@ -59,11 +66,28 @@ const Header = () => {
                   </NavDropdown.Item>
                 </NavDropdown>
               )}
-              <LinkContainer to="/register">
-                <Nav.Link>
-                  <i className="fas fa-user px-1"></i>Register
-                </Nav.Link>
-              </LinkContainer>
+
+              {userInfo && userInfo.isAdmin && (
+                <NavDropdown title="Admin" id="adminuser">
+                  <LinkContainer to="/admin/userlist">
+                    <NavDropdown.Item>
+                      <i className="fas fa-user px-1"></i>Users
+                    </NavDropdown.Item>
+                  </LinkContainer>
+
+                  <LinkContainer to="/admin/productlist">
+                    <NavDropdown.Item>
+                      <i className="fas fa-warehouse"></i> Products
+                    </NavDropdown.Item>
+                  </LinkContainer>
+
+                  <LinkContainer to="/admin/orderlist">
+                    <NavDropdown.Item>
+                      <i className="fas fa-cash-register"></i> Orders
+                    </NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>

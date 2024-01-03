@@ -10,3 +10,7 @@
 8. ---make sure when order is place, that item on stock value is modified.---
 9. ---Clear cart after logging out. refresh after logging out does it---
 10.  ---Clear cart after placing order.---
+11.  ---After placing order and getting redirected to the profile, most recent
+    order doesn't initially show up on the page.  have to refresh to get it to
+    show.
+12.  ---If user is logged in.. do not show the register link in header.---

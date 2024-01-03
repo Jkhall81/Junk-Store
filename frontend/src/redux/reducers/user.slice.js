@@ -7,6 +7,7 @@ const userInfoFromStorage = localStorage.getItem("userInfo")
 const initialState = {
   userInfo: userInfoFromStorage,
   error: null,
+  userList: [],
 };
 
 const userSlice = createSlice({
@@ -15,15 +16,23 @@ const userSlice = createSlice({
   reducers: {
     userLoginRequest: (state, action) => {
       state.error = null;
-      const { username, access, refresh, id, token } = action.payload;
+      const { username, isAdmin, access, refresh, id, token } = action.payload;
       const { first_name, last_name } = token;
       state.userInfo = {
         first_name,
         last_name,
+        isAdmin,
         username,
         access,
         refresh,
         id,
+      };
+      localStorage.setItem("userInfo", JSON.stringify(state.userInfo));
+    },
+    userListRequest: (state, action) => {
+      const { data } = action.payload;
+      state.userList = {
+        ...data,
       };
       localStorage.setItem("userInfo", JSON.stringify(state.userInfo));
     },
@@ -42,6 +51,11 @@ const userSlice = createSlice({
   },
 });
 
-export const { userLoginRequest, userLoginSuccess, userLoginFail, userLogout } =
-  userSlice.actions;
+export const {
+  userLoginRequest,
+  userLoginSuccess,
+  userLoginFail,
+  userLogout,
+  userListRequest,
+} = userSlice.actions;
 export const userReducer = userSlice.reducer;
