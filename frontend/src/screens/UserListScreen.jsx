@@ -31,13 +31,15 @@ const UserListScreen = () => {
   }, [dispatch, navigate, users, isLoading, userInfo.isAdmin, setLocalUsers]);
 
   const deleteHandler = async (id) => {
-    try {
-      await deleteUser(id);
-      const updatedLocalUsers = localUsers.filter((user) => user._id !== id);
-      setLocalUsers(updatedLocalUsers);
-      dispatch(userDeleteRequest(id));
-    } catch (error) {
-      console.error("Error deleting user:", error);
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      try {
+        await deleteUser(id);
+        const updatedLocalUsers = localUsers.filter((user) => user._id !== id);
+        setLocalUsers(updatedLocalUsers);
+        dispatch(userDeleteRequest(id));
+      } catch (error) {
+        console.error("Error deleting user:", error);
+      }
     }
   };
 
