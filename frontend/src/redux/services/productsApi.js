@@ -8,7 +8,17 @@ export const productsApi = api.injectEndpoints({
     getProductById: builder.query({
       query: (productId) => `products/${productId}`,
     }),
+    deleteProductById: builder.mutation({
+      query: (id) => ({
+        url: `/products/${id}/`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
-export const { useGetProductsQuery, useGetProductByIdQuery } = productsApi;
+export const {
+  useGetProductsQuery,
+  useGetProductByIdQuery,
+  useDeleteProductByIdMutation,
+} = productsApi;
