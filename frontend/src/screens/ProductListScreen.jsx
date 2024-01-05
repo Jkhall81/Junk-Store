@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useGetProductsQuery } from "../redux/services/productsApi";
 import { useDeleteProductByIdMutation } from "../redux/services/productsApi";
+import { useCreateProductMutation } from "../redux/services/productsApi";
 
 const ProductListScreen = () => {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ const ProductListScreen = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const { data: products, isLoading, refetch, error } = useGetProductsQuery();
   const [deleteProduct] = useDeleteProductByIdMutation();
+  const [createProduct] = useCreateProductMutation();
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {

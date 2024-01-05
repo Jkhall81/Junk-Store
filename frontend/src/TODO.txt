@@ -1,6 +1,6 @@
 ---1. wrong login credentials error message not showing---
 ---2. logging out from the profile page, leaves you in a blank profile page.---
-3. undefined product/id get request firing off when i go into the cartscreen.
+3. ---undefined product/id get request firing off when i go into the cartscreen.---
 4. after user info update, dispatch login, to update everything.  this way is cleaner.
 ---5. check if passwords don't match, when registering.---
 6. ---submit order , orderitem, add order id to shipping address data.---

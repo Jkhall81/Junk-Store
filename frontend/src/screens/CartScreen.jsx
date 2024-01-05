@@ -21,7 +21,11 @@ const CartScreen = () => {
   const location = useLocation();
   const qty = parseInt(new URLSearchParams(location.search).get("qty"));
 
-  const { data: product, error, isLoading } = useGetProductByIdQuery(id);
+  const {
+    data: product,
+    error,
+    isLoading,
+  } = id ? useGetProductByIdQuery(id) : {};
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
   useEffect(() => {
