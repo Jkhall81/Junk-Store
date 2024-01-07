@@ -30,7 +30,6 @@ const ProductListScreen = () => {
   const deleteHandler = async (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       await deleteProduct(id);
-      console.log(id);
     }
     refetch();
   };

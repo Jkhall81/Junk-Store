@@ -16,6 +16,7 @@ const ProductEditScreen = () => {
     data: product,
     isLoading,
     error,
+    refetch,
   } = id ? useGetProductByIdQuery(id) : {};
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
@@ -42,23 +43,30 @@ const ProductEditScreen = () => {
     }
   }, [product]);
 
+  useEffect(() => {
+    refetch();
+  }, []);
+
   const submitHandler = async (e) => {
     e.preventDefault();
     if (id) {
+      const fileInput = e.target.querySelector('input[type="file"]');
+      const file = fileInput?.files[0];
+
       await patchProduct({
         id: product._id,
         name,
-        image,
+        image: file,
         price,
         brand,
         category,
         countInStock,
         description,
       });
+      navigate("/admin/productlist");
     } else {
       const fileInput = e.target.querySelector('input[type="file"]');
       const file = fileInput.files[0];
-      console.log(file);
 
       await createProduct({
         name,
@@ -68,8 +76,6 @@ const ProductEditScreen = () => {
         category,
         countInStock,
         description,
-      }).then((response) => {
-        console.log(response);
       });
       navigate("/admin/productlist");
     }
@@ -101,6 +107,12 @@ const ProductEditScreen = () => {
             {product && product.image && (
               <div className="mb-2">
                 <Image src={product.image} alt={product.name} fluid />
+                <Form.Control
+                  type="file"
+                  placeholder="Enter Image"
+                  custom
+                  onChange={(e) => setImage(e.target.value)}
+                ></Form.Control>
               </div>
             )}
             {!product || !product.image ? (
