@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import {
   Row,
   Col,
@@ -13,17 +12,28 @@ import {
 import Rating from "../components/Rating";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { useGetProductByIdQuery } from "../redux/services/productsApi";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import {
+  useGetProductByIdQuery,
+  usePostProductReviewMutation,
+} from "../redux/services/productsApi";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useGetReviewsQuery } from "../redux/services/reviewsApi";
 
 const ProductScreen = () => {
   const navigate = useNavigate();
-  const [qty, setQty] = useState(1);
+  const userInfo = useSelector((state) => state.user.userInfo);
+
   const { id } = useParams();
   const { data: product, error, isLoading } = useGetProductByIdQuery(id);
+  const [postReview] = usePostProductReviewMutation();
 
-  if (isLoading) {
+  const [qty, setQty] = useState(1);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const { data: reviews, isLoading: reviewsIsLoading } = useGetReviewsQuery();
+
+  if (isLoading || reviewsIsLoading) {
     return <Loader />;
   }
 
@@ -122,6 +132,37 @@ const ProductScreen = () => {
               </ListGroup.Item>
             </ListGroup>
           </Card>
+        </Col>
+      </Row>
+      <br />
+      <Row>
+        <Col md={6}>
+          <h4>Reviews</h4>
+          {product.numReviews === 0 && (
+            <Message variant="info">No Reviews</Message>
+          )}
+          <ListGroup variant="flush">
+            {reviews
+              .filter((x) => x.product === product._id)
+              .map((review) => (
+                <ListGroup.Item key={review._id}>
+                  <strong>{review.name}</strong>
+                  <Rating value={review.rating} color="#f8e825" />
+                  <p>{review.createdAt.substring(0, 10)}</p>
+                  <p>{review.comment}</p>
+                </ListGroup.Item>
+              ))}
+            <ListGroup.Item>
+              <h4>Write a Review</h4>
+              {userInfo ? (
+                <Form></Form>
+              ) : (
+                <Message variant="info">
+                  Please <Link to="/login">Login</Link>
+                </Message>
+              )}
+            </ListGroup.Item>
+          </ListGroup>
         </Col>
       </Row>
     </div>

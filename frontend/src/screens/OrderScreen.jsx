@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useGetOrderByIdQuery } from "../redux/services/orderApi";
 import { useGetOrderItemByOrderIdQuery } from "../redux/services/orderApi";
 import { usePatchOrderMutation } from "../redux/services/orderApi";
@@ -23,6 +23,7 @@ const OrderScreen = () => {
     order?.user
   );
   const userInfo = useSelector((state) => state.user.userInfo);
+  const navigate = useNavigate();
 
   const createOrder = (data, actions) => {
     if (order && order.totalPrice) {
@@ -67,11 +68,14 @@ const OrderScreen = () => {
   }, [order?.isPaid]);
 
   useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
     if (orderItem) {
       const { shipping_address } = orderItem;
       setShippingAddress(shipping_address);
     }
-  }, [orderItem]);
+  }, [orderItem, userInfo]);
 
   return (
     <div>
