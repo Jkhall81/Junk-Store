@@ -23,6 +23,10 @@ const ProductListScreen = () => {
     }
   }, [userInfo, navigate]);
 
+  useEffect(() => {
+    refetch();
+  }, []);
+
   const deleteHandler = async (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       await deleteProduct(id);

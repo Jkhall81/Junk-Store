@@ -71,6 +71,7 @@ const ProductEditScreen = () => {
       }).then((response) => {
         console.log(response);
       });
+      navigate("/admin/productlist");
     }
   };
 

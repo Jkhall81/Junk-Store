@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useGetProductsQuery } from "../redux/services/productsApi";
 import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
@@ -5,7 +6,13 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 
 const HomeScreen = () => {
-  const { data: products, error, isLoading } = useGetProductsQuery();
+  const { data: products, error, isLoading, refetch } = useGetProductsQuery();
+
+  // homescreen not automatically updating after adding product, have to refresh to see new data.
+  // this handles that.  may not be best practice.  but it works.
+  useEffect(() => {
+    refetch();
+  }, []);
 
   if (isLoading) {
     return <Loader />;
