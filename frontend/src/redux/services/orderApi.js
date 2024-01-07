@@ -16,6 +16,12 @@ export const orderApi = api.injectEndpoints({
         body: { ...data },
       }),
     }),
+    deleteOrderById: builder.mutation({
+      query: (id) => ({
+        url: `/orders/${id}/`,
+        method: "DELETE",
+      }),
+    }),
     getOrders: builder.query({
       query: () => ({
         url: "/orders/",
@@ -51,4 +57,5 @@ export const {
   useGetOrderByIdQuery,
   useGetOrderItemByOrderIdQuery,
   usePatchOrderMutation,
+  useDeleteOrderByIdMutation,
 } = orderApi;

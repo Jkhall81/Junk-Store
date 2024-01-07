@@ -15,6 +15,7 @@ import UserListScreen from "./screens/UserListScreen";
 import UserEditScreen from "./screens/UserEditScreen";
 import ProductListScreen from "./screens/ProductListScreen";
 import ProductEditScreen from "./screens/ProductEditScreen";
+import OrderListScreen from "./screens/OrderListScreen";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./redux/store.js";
@@ -39,6 +40,7 @@ function App() {
               <Route path="/order/:id" element={<OrderScreen />} />
               <Route path="/admin/userlist" element={<UserListScreen />} />
               <Route path="/admin/user/:id" element={<UserEditScreen />} />
+              <Route path="/admin/orderlist" element={<OrderListScreen />} />
               <Route
                 path="/admin/product/edit/:id?"
                 element={<ProductEditScreen />}

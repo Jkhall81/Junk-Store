@@ -16,3 +16,5 @@
 12.  ---If user is logged in.. do not show the register link in header.---
 13.  --Product list screen not automatically updated after redirect from
     product creation screen.--
+14.  --Order screen is showing the name and email of the currently logged in user,
+    not the user that actually made the order.   need to fix that.

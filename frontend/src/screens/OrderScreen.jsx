@@ -8,6 +8,7 @@ import { useGetOrderByIdQuery } from "../redux/services/orderApi";
 import { useGetOrderItemByOrderIdQuery } from "../redux/services/orderApi";
 import { usePatchOrderMutation } from "../redux/services/orderApi";
 import { PayPalButtons } from "@paypal/react-paypal-js";
+import { useGetUserByIdQuery } from "../redux/services/userDetailApi";
 
 const OrderScreen = () => {
   const { id } = useParams();
@@ -17,7 +18,9 @@ const OrderScreen = () => {
   const [shippingAddress, setShippingAddress] = useState({});
   const [patchOrder] = usePatchOrderMutation();
   // const [{ isPending }] = usePayPalScriptReducer();
-  const name = JSON.parse(localStorage.getItem("userInfo"));
+  const { data: user, isLoading: userIsLoading } = useGetUserByIdQuery(
+    order?.user
+  );
 
   const createOrder = (data, actions) => {
     if (order && order.totalPrice) {
@@ -61,7 +64,7 @@ const OrderScreen = () => {
 
   return (
     <div>
-      {isLoading ? (
+      {isLoading || userIsLoading ? (
         <Loader />
       ) : (
         <Row>
@@ -70,13 +73,13 @@ const OrderScreen = () => {
             <ListGroup variant="flush">
               <ListGroup.Item>
                 <h2>Shipping</h2>
+                <p>Name: {`${user?.first_name} ${user?.last_name}`}</p>
                 <p>
-                  Name: {name.first_name} {name.last_name}
-                </p>
-                <p>
-                  Email:{" "}
+                  Email: {""}
                   <strong>
-                    <a href={`mailto:${name.username}`}>{name.username}</a>
+                    <a
+                      href={`mailto:${user?.username}`}
+                    >{`${user?.username}`}</a>
                   </strong>
                 </p>
                 <p>
