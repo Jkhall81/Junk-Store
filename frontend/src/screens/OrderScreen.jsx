@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Row, Col, ListGroup, Image, Card } from "react-bootstrap";
+import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { Link } from "react-router-dom";
@@ -9,11 +9,12 @@ import { useGetOrderItemByOrderIdQuery } from "../redux/services/orderApi";
 import { usePatchOrderMutation } from "../redux/services/orderApi";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useGetUserByIdQuery } from "../redux/services/userDetailApi";
+import { useSelector } from "react-redux";
 
 const OrderScreen = () => {
   const { id } = useParams();
   const [hasPaid, setHasPaid] = useState(null);
-  const { data: order, isLoading } = useGetOrderByIdQuery({ id });
+  const { data: order, isLoading, refetch } = useGetOrderByIdQuery({ id });
   const { data: orderItem } = useGetOrderItemByOrderIdQuery({ id });
   const [shippingAddress, setShippingAddress] = useState({});
   const [patchOrder] = usePatchOrderMutation();
@@ -21,6 +22,7 @@ const OrderScreen = () => {
   const { data: user, isLoading: userIsLoading } = useGetUserByIdQuery(
     order?.user
   );
+  const userInfo = useSelector((state) => state.user.userInfo);
 
   const createOrder = (data, actions) => {
     if (order && order.totalPrice) {
@@ -44,6 +46,15 @@ const OrderScreen = () => {
       paidAt: new Date().toISOString(),
     });
     setHasPaid(true);
+  };
+
+  const deliverHandler = async () => {
+    await patchOrder({
+      id: id,
+      isDelivered: true,
+      deliveredAt: new Date().toISOString(),
+    });
+    refetch();
   };
 
   // console.log(order);
@@ -193,6 +204,18 @@ const OrderScreen = () => {
                   />
                 </ListGroup.Item>
               )}
+              {userInfo &&
+                userInfo.isAdmin &&
+                order.isPaid &&
+                !order.isDelivered && (
+                  <ListGroup.Item>
+                    <div className="d-grid mt-4">
+                      <Button onClick={deliverHandler} type="button">
+                        Mark As Delivered
+                      </Button>
+                    </div>
+                  </ListGroup.Item>
+                )}
             </Card>
           </Col>
         </Row>
