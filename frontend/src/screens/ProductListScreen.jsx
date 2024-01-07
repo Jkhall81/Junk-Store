@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useGetProductsQuery } from "../redux/services/productsApi";
 import { useDeleteProductByIdMutation } from "../redux/services/productsApi";
-import { useCreateProductMutation } from "../redux/services/productsApi";
 
 const ProductListScreen = () => {
   const dispatch = useDispatch();
@@ -15,7 +14,6 @@ const ProductListScreen = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const { data: products, isLoading, refetch, error } = useGetProductsQuery();
   const [deleteProduct] = useDeleteProductByIdMutation();
-  const [createProduct] = useCreateProductMutation();
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
@@ -44,9 +42,11 @@ const ProductListScreen = () => {
           <h1>Products</h1>
         </Col>
         <Col className="text-right">
-          <Button className="my-3" onClick={createProductHandler}>
-            <i className="fas fa-plus"></i> Create Product
-          </Button>
+          <LinkContainer to="/admin/product/edit">
+            <Button className="my-3" onClick={createProductHandler}>
+              <i className="fas fa-plus"></i> Create Product
+            </Button>
+          </LinkContainer>
         </Col>
       </Row>
       {isLoading ? (
@@ -75,7 +75,7 @@ const ProductListScreen = () => {
                 <td>{product.category}</td>
                 <td>{product.brand}</td>
                 <td>
-                  <LinkContainer to={`/admin/product/${product._id}`}>
+                  <LinkContainer to={`/admin/product/edit/${product._id}`}>
                     <Button variant="light" className="btn-sm">
                       <i className="fas fa-edit fa-lg"></i>
                     </Button>
