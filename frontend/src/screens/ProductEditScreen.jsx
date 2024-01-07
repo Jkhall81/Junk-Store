@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Form, Button, Image } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import FormContainer from "../components/FormContainer";
@@ -30,6 +30,7 @@ const ProductEditScreen = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userInfo = useSelector((state) => state.user.userInfo);
 
   useEffect(() => {
     if (product) {
@@ -46,6 +47,14 @@ const ProductEditScreen = () => {
   useEffect(() => {
     refetch();
   }, []);
+
+  useEffect(() => {
+    if (userInfo && userInfo.isAdmin) {
+      console.log("admin status");
+    } else {
+      navigate("/login");
+    }
+  }, [userInfo, navigate]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
