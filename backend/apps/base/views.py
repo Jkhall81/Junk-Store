@@ -52,6 +52,19 @@ class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
     permission_classes = [AllowAny]
     
+    def perform_create(self, serializer):
+        review_instance = serializer.save()
+        
+        product = review_instance.product
+        product.numReviews = Review.objects.filter(product=product).count()
+        total_rating = sum(review.rating for review in Review.objects.filter(product=product))
+        product.rating = total_rating / product.numReviews if product.numReviews > 0 else 0
+        
+        product.save()
+        
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+    
     
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
