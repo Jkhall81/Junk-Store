@@ -119,7 +119,6 @@ const ProductEditScreen = () => {
                 <Form.Control
                   type="file"
                   placeholder="Enter Image"
-                  custom
                   onChange={(e) => setImage(e.target.value)}
                 ></Form.Control>
               </div>
@@ -128,7 +127,6 @@ const ProductEditScreen = () => {
               <Form.Control
                 type="file"
                 placeholder="Enter Image"
-                custom
                 onChange={(e) => setImage(e.target.value)}
               ></Form.Control>
             ) : null}

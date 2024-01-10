@@ -37,6 +37,20 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     permission_classes = [AllowAny]
     
+    def list(self, request, *args, **kwargs):
+        query = request.query_params.get('keyword')
+        print('query:', query)
+        if query in ('null'):
+            products = Product.objects.all()
+        else:
+            products = Product.objects.filter(name__icontains=query)
+            
+        serializer = self.serializer_class(products, many=True)
+
+        for product_data in serializer.data:
+            product_data['image'] = request.build_absolute_uri(product_data['image'])
+        return Response(serializer.data)
+    
     
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
