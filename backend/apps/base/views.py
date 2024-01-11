@@ -7,6 +7,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.response import Response
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from rest_framework.exceptions import MethodNotAllowed
 from drf_yasg.utils import swagger_auto_schema
 
@@ -40,16 +41,33 @@ class ProductViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         query = request.query_params.get('keyword')
         print('query:', query)
-        if query in ('null'):
+        page = request.query_params.get('page')
+        print('page:', page)
+        
+        if query in ('null', 'undefined'):
             products = Product.objects.all()
         else:
             products = Product.objects.filter(name__icontains=query)
+            
+        paginator = Paginator(products, 2)
+        
+        try:
+            products = paginator.page(page)
+        except PageNotAnInteger:
+            products = paginator.page(1)
+        except EmptyPage:
+            products = paginator.page(paginator.num_pages)
+            
+        if page in (None, 'null', 'undefined'):
+            page = 1
+            
+        page = int(page)
             
         serializer = self.serializer_class(products, many=True)
 
         for product_data in serializer.data:
             product_data['image'] = request.build_absolute_uri(product_data['image'])
-        return Response(serializer.data)
+        return Response({'products': serializer.data, 'page': page, 'pages': paginator.num_pages})
     
     
 class UserViewSet(viewsets.ModelViewSet):

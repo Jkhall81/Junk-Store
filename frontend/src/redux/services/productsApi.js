@@ -3,10 +3,10 @@ import { api } from "./api";
 export const productsApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: (keyword) => {
+      query: (data) => {
         return {
           url: "products/",
-          params: `?keyword=${keyword}`,
+          params: `?keyword=${data.keyword}&page=${data.pageParam}`,
         };
       },
     }),

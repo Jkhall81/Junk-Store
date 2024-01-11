@@ -12,7 +12,12 @@ const ProductListScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state.user.userInfo);
-  const { data: products, isLoading, refetch, error } = useGetProductsQuery();
+  const {
+    data: { products } = {},
+    isLoading,
+    refetch,
+    error,
+  } = useGetProductsQuery();
   const [deleteProduct] = useDeleteProductByIdMutation();
 
   useEffect(() => {
