@@ -6,7 +6,7 @@ export const productsApi = api.injectEndpoints({
       query: (data) => {
         return {
           url: "products/",
-          params: `?keyword=${data.keyword}&page=${data.pageParam}`,
+          params: `?keyword=${data?.keyword}&page=${data?.pageParam}`,
         };
       },
     }),

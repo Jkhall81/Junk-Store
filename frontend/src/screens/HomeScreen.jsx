@@ -12,7 +12,6 @@ const HomeScreen = () => {
   const [searchParams] = useSearchParams();
   const keyword = searchParams.get("keyword");
   const pageParam = searchParams.get("page");
-  console.log("Page:", pageParam);
   const {
     data: { products, page, pages } = {},
     error,
@@ -38,7 +37,6 @@ const HomeScreen = () => {
     <div>
       <h1 className="text-center">Latest Products</h1>
       <Row>
-        {console.log(products)}
         {products?.map((product) => (
           <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
             <Product product={product} />

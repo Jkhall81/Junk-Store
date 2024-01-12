@@ -1,23 +1,26 @@
 import Message from "../components/Message";
 import Loader from "../components/Loader";
+import Paginate from "../components/Paginate";
 import { useEffect, useState } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { Table, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useGetProductsQuery } from "../redux/services/productsApi";
 import { useDeleteProductByIdMutation } from "../redux/services/productsApi";
 
 const ProductListScreen = () => {
-  const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
+  const pageParam = searchParams.get("page");
+  const keyword = searchParams.get("keyword");
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state.user.userInfo);
   const {
-    data: { products } = {},
+    data: { products, page, pages } = {},
     isLoading,
     refetch,
     error,
-  } = useGetProductsQuery();
+  } = useGetProductsQuery({ pageParam, keyword });
   const [deleteProduct] = useDeleteProductByIdMutation();
 
   useEffect(() => {
@@ -101,6 +104,7 @@ const ProductListScreen = () => {
           </tbody>
         </Table>
       )}
+      <Paginate page={page} pages={pages} isAdmin={true} />
     </div>
   );
 };

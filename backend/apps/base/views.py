@@ -40,16 +40,14 @@ class ProductViewSet(viewsets.ModelViewSet):
     
     def list(self, request, *args, **kwargs):
         query = request.query_params.get('keyword')
-        print('query:', query)
         page = request.query_params.get('page')
-        print('page:', page)
         
         if query in ('null', 'undefined'):
             products = Product.objects.all()
         else:
             products = Product.objects.filter(name__icontains=query)
             
-        paginator = Paginator(products, 2)
+        paginator = Paginator(products, 6)
         
         try:
             products = paginator.page(page)

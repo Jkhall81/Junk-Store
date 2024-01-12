@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const SearchBox = () => {
   const [keyword, setKeyword] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
   const submitHandler = (e) => {
     e.preventDefault();
 
     if (keyword) {
-      navigate(`/?keyword=${keyword}&page=2`);
+      if (location.pathname.startsWith("/admin/productlist")) {
+        navigate(`/admin/productlist/?keyword=${keyword}&page=2`);
+      } else {
+        navigate(`/?keyword=${keyword}&page=2`);
+      }
     }
   };
 
