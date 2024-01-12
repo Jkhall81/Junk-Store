@@ -5,6 +5,7 @@ import Product from "../components/Product";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import Paginate from "../components/Paginate";
+import ProductCarousel from "../components/ProductCarousel";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 const HomeScreen = () => {
@@ -18,6 +19,10 @@ const HomeScreen = () => {
     isLoading,
     refetch,
   } = useGetProductsQuery({ keyword, pageParam });
+
+  const filteredProducts = products
+    ?.filter((x) => Number(x.rating) >= 4)
+    .sort((a, b) => b.rating - a.rating.slice(0, 5));
 
   // homescreen not automatically updating after adding product, have to refresh to see new data.
   // this handles that.  may not be best practice.  but it works.
@@ -35,6 +40,8 @@ const HomeScreen = () => {
 
   return (
     <div>
+      {!keyword && <ProductCarousel products={filteredProducts} />}
+
       <h1 className="text-center">Latest Products</h1>
       <Row>
         {products?.map((product) => (
