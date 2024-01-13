@@ -190,6 +190,8 @@ STATICFILES_DIRS = [
 # for user uploaded content!
 MEDIA_ROOT = 'static/images'
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -204,4 +206,10 @@ CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS_DEPLOY')
 SWAGGER_SETTINGS = {
     'DEFAULT_API_URL': 'https://junkstore-backend.onrender.com',
     'USE_SESSION_AUTH': False,
+}
+
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    }
 }
