@@ -201,5 +201,6 @@ CORS_ALLOWED_WHITELIST = env.list('CORS_ALLOWED_WHITELIST_DEPLOY')
 CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS_DEPLOY')
 
 SWAGGER_SETTINGS = {
-    'DEFAULT_API_URL': 'https://junkstore-backend.onrender.com'
+    'DEFAULT_API_URL': 'https://junkstore-backend.onrender.com',
+    'USE_SESSION_AUTH': False,
 }
