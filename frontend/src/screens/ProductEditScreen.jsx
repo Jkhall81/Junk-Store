@@ -44,9 +44,9 @@ const ProductEditScreen = () => {
     }
   }, [product]);
 
-  useEffect(() => {
-    refetch();
-  }, []);
+  // useEffect(() => {
+  //   refetch();
+  // }, []);
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
