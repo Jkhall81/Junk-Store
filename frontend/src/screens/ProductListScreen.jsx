@@ -42,10 +42,6 @@ const ProductListScreen = () => {
     refetch();
   };
 
-  const createProductHandler = (product) => {
-    // create product
-  };
-
   return (
     <div>
       <Row className="align-items-center">
@@ -54,7 +50,7 @@ const ProductListScreen = () => {
         </Col>
         <Col className="text-right">
           <LinkContainer to="/admin/product/edit">
-            <Button className="my-3" onClick={createProductHandler}>
+            <Button className="my-3">
               <i className="fas fa-plus"></i> Create Product
             </Button>
           </LinkContainer>
