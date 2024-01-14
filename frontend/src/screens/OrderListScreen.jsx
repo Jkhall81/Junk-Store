@@ -30,6 +30,7 @@ const OrderListScreen = () => {
               <th>ID</th>
               <th>USER</th>
               <th>DATE</th>
+              <th>TOTAL PRICE</th>
               <th>PAID</th>
               <th>DELIVERED</th>
               <th></th>
