@@ -207,9 +207,3 @@ SWAGGER_SETTINGS = {
     'DEFAULT_API_URL': 'https://junkstore-backend.onrender.com',
     'USE_SESSION_AUTH': False,
 }
-
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    }
-}
