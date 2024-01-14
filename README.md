@@ -52,9 +52,13 @@ The project has a Docker Postgres container that you can use on your local machi
 
 This project uses react and the build tool Vite for the front end. React Router is used for routing, Redux is used for state management, and Redux RTK Query is used to make all API calls. React Bootstrap is used to make most of the user interface.
 
+https://junk-store.vercel.app/
+
 ## Backend
 
 The backend uses Django and the Django Rest Framework. Most of the API endpoints use modelviewsets. They are very easy to use and require very little code to set up. There are also dependencies to hook the API up to a postgres dababase. Pillow for working with image files. DRF-YASG is used to implement swagger API documentation. JWTs are used for user login, and API access authorization. Gunicorn is used as a server.
+
+https://junkstore-backend.onrender.com/
 
 ## API Documentation
 
