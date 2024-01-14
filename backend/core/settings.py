@@ -187,7 +187,7 @@ STATICFILES_DIRS = [
 ]
 
 # for user uploaded content!
-MEDIA_URL = '/static/media'
+MEDIA_URL = '/static/media/'
 MEDIA_ROOT = BASE_DIR / 'static/media'
 
 STATIC_ROOT = BASE_DIR / 'static/staticfiles'
