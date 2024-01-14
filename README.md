@@ -42,3 +42,38 @@ The site has paypal functionality and uses a paypal button to allow users to mak
   - Pillow
   - psycopg2-binary
   - whitenoise
+
+## Getting Started
+
+The Project code can be found here: https://github.com/Jkhall81/Junk-Store.
+The project has a Docker Postgres container that you can use on your local machine if you wish. You just need to modify the settings.py file to get the Django API to connect to it. Also the RTK Query base url, located in the frontend/src/redux/services/api.js needs to be changed to get the application to run on your local machine.
+
+## Frontend
+
+This project uses react and the build tool Vite for the front end. React Router is used for routing, Redux is used for state management, and Redux RTK Query is used to make all API calls. React Bootstrap is used to make most of the user interface.
+
+## Backend
+
+The backend uses Django and the Django Rest Framework. Most of the API endpoints use modelviewsets. They are very easy to use and require very little code to set up. There are also dependencies to hook the API up to a postgres dababase. Pillow for working with image files. DRF-YASG is used to implement swagger API documentation. JWTs are used for user login, and API access authorization. Gunicorn is used as a server.
+
+## API Documentation
+
+Swagger is used to provide API documentation. It can be accessed via this url:
+https://junkstore-backend.onrender.com/swagger/
+All endpoints are shown, with nice easy to read examples on how to use each endpoint. Swagger is great.
+
+## Database
+
+In development a Docker postgres container was used. For deployment the application is using a postgres database hosted on Render. Nothing really special about the database. Models were created using Django, the Django ORM is used to access the database. Right now the application doesn't have a backup.
+
+## Deployment
+
+The front end is deployed on a free Vercel account. The Backend, both the API and the postgres atabase, is deployed on a paid render account.
+
+## Testing
+
+Work in progress.
+
+## License
+
+This project use an MIT license.
