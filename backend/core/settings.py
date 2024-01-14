@@ -187,8 +187,8 @@ STATICFILES_DIRS = [
 ]
 
 # for user uploaded content!
-MEDIA_URL = '/static/images/'
-MEDIA_ROOT = BASE_DIR / 'static/images'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
@@ -207,3 +207,5 @@ SWAGGER_SETTINGS = {
     'DEFAULT_API_URL': 'https://junkstore-backend.onrender.com',
     'USE_SESSION_AUTH': False,
 }
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
