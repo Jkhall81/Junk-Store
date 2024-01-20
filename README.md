@@ -2,6 +2,11 @@
 
 Junk Store is an Ecommerce store built with React, Redux, React Router, and React Bootstrap for the frontend. The backend is implemented using Django, Django Rest Framework, and Gunicorn. The database is powered by PostgreSQL and the project is hosted on Render (backend) and Vercel (frontend).
 
+To access the site's admin features, please use the following account:
+
+Login: admin@gmail.com
+password: password123
+
 ## Table of Contents
 
 - [Features](#features)
